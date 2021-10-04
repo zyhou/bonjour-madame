@@ -36,5 +36,5 @@ exports.handler = async function (event, context) {
     files: [madameData.picture],
   });
 
-  res.status(200).json({ ...madameData });
+  return { statusCode: 200, body: JSON.stringify({ ...madameData }) };
 };
