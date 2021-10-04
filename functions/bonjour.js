@@ -1,5 +1,5 @@
 const { JSDOM } = require("jsdom");
-const { WebhookClient } = require("discord.js");
+const { WebhookClient, MessageEmbed } = require("discord.js");
 
 const BM_URL = "https://www.bonjourmadame.fr/";
 
@@ -26,9 +26,10 @@ function getMadameData() {
 exports.handler = async function (event, context) {
   const madameData = await getMadameData();
 
-  const webhookClient = new WebhookClient({
-    url: process.env.WEBHOOK_URL,
-  });
+  const webhookClient = new WebhookClient(
+    process.env.WEBHOOK_ID,
+    process.env.WEBHOOK_TOKEN
+  );
 
   webhookClient.send({
     content: madameData.title,
