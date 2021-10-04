@@ -2,9 +2,14 @@
   "name": "nextjs",
   "version": "1.0.0",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "dev": "netlify dev"
+  },
   "dependencies": {
     "discord.js": "^13.1.0",
     "jsdom": "^17.0.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^6.9.30"
   }
 }

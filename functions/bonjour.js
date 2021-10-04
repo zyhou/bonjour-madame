@@ -15,8 +15,8 @@ function getMadameData() {
 
     const title = document
       .querySelector(".post-title")
-      .textContent.replaceAll("\t", "")
-      .replaceAll("\n", "");
+      .textContent.replace(/\t/g, "")
+      .replace(/\n/g, "");
 
     const picture = rawUrl.split("?")[0];
     return { picture, title };
