@@ -23,7 +23,7 @@ function getMadameData() {
   });
 }
 
-export default async function handler(req, res) {
+exports.handler = async function (event, context) {
   const madameData = await getMadameData();
 
   const webhookClient = new WebhookClient({
@@ -37,4 +37,4 @@ export default async function handler(req, res) {
   });
 
   res.status(200).json({ ...madameData });
-}
+};
