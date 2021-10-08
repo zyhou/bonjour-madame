@@ -1,14 +1,13 @@
 const { JSDOM } = require("jsdom");
-const { WebhookClient, MessageEmbed } = require("discord.js");
+const { WebhookClient } = require("discord.js");
 
 const BM_URL = "https://www.bonjourmadame.fr/";
 
-function getMadameData() {
+async function getMadameData() {
   return JSDOM.fromURL(BM_URL).then(({ window }) => {
     const { document } = window;
 
-    const rawUrl =
-      document.querySelector(".post-content").children[0].children[0].src;
+    const rawUrl = document.querySelector(".post-content img").src;
     if (!rawUrl) {
       throw new Error("Madame est introuvable :-(");
     }
@@ -23,7 +22,7 @@ function getMadameData() {
   });
 }
 
-exports.handler = async function (event, context) {
+async function sendMadame() {
   const madameData = await getMadameData();
 
   const webhookClient = new WebhookClient(
@@ -31,11 +30,24 @@ exports.handler = async function (event, context) {
     process.env.WEBHOOK_TOKEN
   );
 
-  webhookClient.send({
+  await webhookClient.send({
     content: madameData.title,
     username: "Bonjour Madame",
     files: [madameData.picture],
   });
 
-  return { statusCode: 200, body: JSON.stringify({ ...madameData }) };
+  return madameData;
+}
+
+exports.handler = async function () {
+  try {
+    const madameData = await sendMadame();
+    return { statusCode: 200, body: JSON.stringify(madameData) };
+  } catch (error) {
+    console.error({ error });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: error.message }),
+    };
+  }
 };
